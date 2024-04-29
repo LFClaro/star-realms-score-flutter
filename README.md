@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://drive.google.com/uc?id=18O666KBtX2D70aGr98qwUyHcdt8k1PNe" alt="Star Realms Scoring App" width="200" />
+</p>
+
 # Star Realms Score
 
 A Flutter app to keep score on the Star Realms deckbuilding game.
