@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:star_realms_score/theme.dart';
 import 'package:star_realms_score/screens/score_board/score_board_widget.dart';
 
-void main() => runApp(ScoreApp());
+void main() => runApp(const ScoreApp());
 
 class ScoreApp extends StatelessWidget {
   const ScoreApp({super.key});
