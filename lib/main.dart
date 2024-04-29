@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'constants.dart';
+import 'widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,45 +35,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _userCounter = 50;
   int _opponentCounter = 50;
-
-  static const bodyText = TextStyle(
-    fontFamily: 'YuseiMagic',
-    fontSize: 30.0,
-  );
-
-  static const buttonText = TextStyle(
-    fontFamily: 'YuseiMagic',
-    fontSize: 25.0,
-    color: Colors.white,
-  );
-
-  static const userScoreText = TextStyle(
-    fontFamily: 'Sixtyfour',
-    fontSize: 50.0,
-    color: Colors.blue,
-  );
-
-  static const opponentScoreText = TextStyle(
-    fontFamily: 'Sixtyfour',
-    fontSize: 50.0,
-    color: Colors.greenAccent,
-  );
-
-  static const userBoxShadow = [
-    BoxShadow(
-      blurRadius: 40.0,
-      offset: Offset(3.0, 6.0),
-      blurStyle: BlurStyle.inner,
-    )
-  ];
-
-  static const opponentBoxShadow = [
-    BoxShadow(
-      blurRadius: 40.0,
-      offset: Offset(-3.0, -6.0),
-      blurStyle: BlurStyle.inner,
-    )
-  ];
 
   final buttonStyle = ElevatedButton.styleFrom(
     fixedSize: const Size(80, 60),
@@ -155,223 +118,224 @@ class _MyHomePageState extends State<MyHomePage> {
               fit: BoxFit.cover,
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RotatedBox(
-                quarterTurns: -2,
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 200.0,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: Colors.indigoAccent,
-                        borderRadius: BorderRadius.circular(8.0),
-                        boxShadow: opponentBoxShadow,
-                      ),
+                    RotatedBox(
+                      quarterTurns: -2,
                       child: Column(
-                        children: <Widget>[
-                          const Text(
-                            'Your score',
-                            style: bodyText,
+                        children: [
+                          Container(
+                            width: 200.0,
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: Colors.indigoAccent,
+                              borderRadius: BorderRadius.circular(8.0),
+                              boxShadow: Constants.kOpponentBoxShadow,
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                const Text(
+                                  'Your score',
+                                  style: Constants.kBodyText,
+                                ),
+                                Text(
+                                  '$_opponentCounter',
+                                  style: Constants.kOpponentScoreText,
+                                ),
+                              ],
+                            ),
                           ),
-                          Text(
-                            '$_opponentCounter',
-                            style: opponentScoreText,
-                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  direction: Axis.horizontal,
+                                  spacing: 10.0,
+                                  runSpacing: 20.0,
+                                  children: [
+                                    PointsButton(
+                                      onPressed: () {
+                                        _decrementOpponentCounter(1);
+                                      },
+                                      points: 1,
+                                      icon: Icons.remove,
+                                    ),
+                                    PointsButton(
+                                      onPressed: () {
+                                        _decrementOpponentCounter(5);
+                                      },
+                                      points: 5,
+                                      icon: Icons.remove,
+                                    ),
+                                    PointsButton(
+                                      onPressed: () {
+                                        _decrementOpponentCounter(10);
+                                      },
+                                      points: 10,
+                                      icon: Icons.remove,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  direction: Axis.horizontal,
+                                  spacing: 10.0,
+                                  runSpacing: 20.0,
+                                  children: [
+                                    PointsButton(
+                                      onPressed: () {
+                                        _incrementOpponentCounter(1);
+                                      },
+                                      points: 1,
+                                      icon: Icons.add,
+                                    ),
+                                    PointsButton(
+                                      onPressed: () {
+                                        _incrementOpponentCounter(5);
+                                      },
+                                      points: 5,
+                                      icon: Icons.add,
+                                    ),
+                                    PointsButton(
+                                      onPressed: () {
+                                        _incrementOpponentCounter(10);
+                                      },
+                                      points: 10,
+                                      icon: Icons.add,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        direction: Axis.horizontal,
-                        spacing: 10.0,
-                        runSpacing: 20.0,
-                        children: [
-                          TextButton(
-                            style: buttonStyle,
-                            onPressed: () {
-                              _decrementOpponentCounter(10);
-                            },
-                            child: const Text(
-                              "-10",
-                              style: buttonText,
-                            ),
+                    const Divider(
+                      height: 36.0,
+                      thickness: 2.0,
+                      indent: 32.0,
+                      endIndent: 32.0,
+                      color: Colors.white30,
+                    ),
+                    IconButton.filled(
+                        onPressed: _resetCounters,
+                        icon: const Icon(
+                          Icons.refresh,
+                          size: 50.0,
+                        )),
+                    const Divider(
+                      height: 36.0,
+                      thickness: 2.0,
+                      indent: 32.0,
+                      endIndent: 32.0,
+                      color: Colors.white30,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          width: 200.0,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            color: Colors.greenAccent,
+                            borderRadius: BorderRadius.circular(8.0),
+                            boxShadow: Constants.kUserBoxShadow,
                           ),
-                          TextButton(
-                            style: buttonStyle,
-                            onPressed: () {
-                              _decrementOpponentCounter(5);
-                            },
-                            child: const Text(
-                              "-5",
-                              style: buttonText,
-                            ),
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Your score',
+                                style: Constants.kBodyText,
+                              ),
+                              Text(
+                                '$_userCounter',
+                                style: Constants.kUserScoreText,
+                              ),
+                            ],
                           ),
-                          TextButton(
-                            style: buttonStyle,
-                            onPressed: () {
-                              _decrementOpponentCounter(1);
-                            },
-                            child: const Text(
-                              "-1",
-                              style: buttonText,
-                            ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Column(
+                            children: [
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                direction: Axis.horizontal,
+                                spacing: 10.0,
+                                runSpacing: 20.0,
+                                children: [
+                                  PointsButton(
+                                    onPressed: () {
+                                      _decrementUserCounter(1);
+                                    },
+                                    points: 1,
+                                    icon: Icons.remove,
+                                  ),
+                                  PointsButton(
+                                    onPressed: () {
+                                      _decrementUserCounter(5);
+                                    },
+                                    points: 5,
+                                    icon: Icons.remove,
+                                  ),
+                                  PointsButton(
+                                    onPressed: () {
+                                      _decrementUserCounter(10);
+                                    },
+                                    points: 10,
+                                    icon: Icons.remove,
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                direction: Axis.horizontal,
+                                spacing: 10.0,
+                                runSpacing: 20.0,
+                                children: [
+                                  PointsButton(
+                                    onPressed: () {
+                                      _incrementUserCounter(1);
+                                    },
+                                    points: 1,
+                                    icon: Icons.add,
+                                  ),
+                                  PointsButton(
+                                    onPressed: () {
+                                      _incrementUserCounter(5);
+                                    },
+                                    points: 5,
+                                    icon: Icons.add,
+                                  ),
+                                  PointsButton(
+                                    onPressed: () {
+                                      _incrementUserCounter(10);
+                                    },
+                                    points: 10,
+                                    icon: Icons.add,
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
-                          TextButton(
-                            style: buttonStyle,
-                            onPressed: () {
-                              _incrementOpponentCounter(1);
-                            },
-                            child: const Text(
-                              "+1",
-                              style: buttonText,
-                            ),
-                          ),
-                          TextButton(
-                            style: buttonStyle,
-                            onPressed: () {
-                              _incrementOpponentCounter(5);
-                            },
-                            child: const Text(
-                              "+5",
-                              style: buttonText,
-                            ),
-                          ),
-                          TextButton(
-                            style: buttonStyle,
-                            onPressed: () {
-                              _incrementOpponentCounter(10);
-                            },
-                            child: const Text(
-                              "+10",
-                              style: buttonText,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-              const Divider(
-                height: 36.0,
-                thickness: 2.0,
-                indent: 32.0,
-                endIndent: 32.0,
-                color: Colors.white30,
-              ),
-              IconButton.filled(
-                  onPressed: _resetCounters, icon: const Icon(Icons.refresh)),
-              const Divider(
-                height: 36.0,
-                thickness: 2.0,
-                indent: 32.0,
-                endIndent: 32.0,
-                color: Colors.white30,
-              ),
-              Column(
-                children: [
-                  Container(
-                    width: 200.0,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.greenAccent,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: userBoxShadow,
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        const Text(
-                          'Your score',
-                          style: bodyText,
-                        ),
-                        Text(
-                          '$_userCounter',
-                          style: userScoreText,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      direction: Axis.horizontal,
-                      spacing: 10.0,
-                      runSpacing: 20.0,
-                      children: [
-                        TextButton(
-                          style: buttonStyle,
-                          onPressed: () {
-                            _decrementUserCounter(10);
-                          },
-                          child: const Text(
-                            "-10",
-                            style: buttonText,
-                          ),
-                        ),
-                        TextButton(
-                          style: buttonStyle,
-                          onPressed: () {
-                            _decrementUserCounter(5);
-                          },
-                          child: const Text(
-                            "-5",
-                            style: buttonText,
-                          ),
-                        ),
-                        TextButton(
-                          style: buttonStyle,
-                          onPressed: () {
-                            _decrementUserCounter(1);
-                          },
-                          child: const Text(
-                            "-1",
-                            style: buttonText,
-                          ),
-                        ),
-                        TextButton(
-                          style: buttonStyle,
-                          onPressed: () {
-                            _incrementUserCounter(1);
-                          },
-                          child: const Text(
-                            "+1",
-                            style: buttonText,
-                          ),
-                        ),
-                        TextButton(
-                          style: buttonStyle,
-                          onPressed: () {
-                            _incrementUserCounter(5);
-                          },
-                          child: const Text(
-                            "+5",
-                            style: buttonText,
-                          ),
-                        ),
-                        TextButton(
-                          style: buttonStyle,
-                          onPressed: () {
-                            _incrementUserCounter(10);
-                          },
-                          child: const Text(
-                            "+10",
-                            style: buttonText,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ],
       )), // This trailing comma makes auto-formatting nicer for build methods.

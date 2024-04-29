@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Set LOCALHOST_IP",
+        "command": "LOCALHOST_IP=$(ifconfig | awk '/inet /&&!/127.0.0.1/{print $2;exit}')",
+        "type": "shell",
+        "problemMatcher": []
+      }
+    ],
+  }
