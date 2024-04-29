@@ -1,48 +1,58 @@
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
+import 'package:star_realms_score/theme.dart';
 
 class PointsButton extends StatefulWidget {
   const PointsButton({
     super.key,
     required this.points,
     required this.onPressed,
-    this.icon,
   });
 
   final int points;
   final Function() onPressed;
-  final IconData? icon;
 
   @override
   State<PointsButton> createState() => PointsButtonState();
 }
 
 class PointsButtonState extends State<PointsButton> {
-  final buttonStyle = ElevatedButton.styleFrom(
-    fixedSize: const Size(100, 60),
-    backgroundColor: Colors.white54,
-  );
   @override
   Widget build(BuildContext context) {
+    final positiveBtnStyle = ElevatedButton.styleFrom(
+      fixedSize: const Size(100, 60),
+      backgroundColor: StarScoreTheme.of(context).positiveButton,
+    );
+
+    final negativeBtnStyle = ElevatedButton.styleFrom(
+      fixedSize: const Size(100, 60),
+      backgroundColor: StarScoreTheme.of(context).negativeButton,
+    );
+
+    final buttonTextStyle = TextStyle(
+      fontFamily: 'YuseiMagic',
+      fontSize: 25.0,
+      color: StarScoreTheme.of(context).primaryTextColor,
+    );
+    
     Widget textWidget = Text(
-      widget.points.toString(),
-      style: Constants.kButtonText,
+      (widget.points.abs()).toString(),
+      style: buttonTextStyle,
     );
 
     return ElevatedButton.icon(
-      icon: widget.icon != null
+      icon: widget.points > 0
           ? Icon(
-              widget.icon,
-              color: Colors.white,
+              Icons.add,
+              color: StarScoreTheme.of(context).primaryTextColor,
               size: 25.0,
             )
-          : const Icon(
-              Icons.add,
-              color: Colors.white,
+          : Icon(
+              Icons.remove,
+              color: StarScoreTheme.of(context).primaryTextColor,
               size: 25.0,
             ),
-      style: buttonStyle,
+      style: widget.points > 0 ? positiveBtnStyle : negativeBtnStyle,
       onPressed: widget.onPressed,
       label: textWidget,
     );
