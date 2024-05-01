@@ -38,7 +38,7 @@ abstract class StarScoreTheme {
 }
 
 class LightModeTheme extends StarScoreTheme {
-  late Color primaryColor = const Color(0xFF59559B);
+  late Color primaryColor = const Color(0xFF3A8DC0);
   late Color secondaryColor = const Color(0xFFECC54D);
   late Color primaryTextColor = const Color(0xFFF0F3F1);
   late Color secondaryTextColor = const Color(0xFF333F44);
@@ -47,7 +47,7 @@ class LightModeTheme extends StarScoreTheme {
 }
 
 class DarkModeTheme extends StarScoreTheme {
-  late Color primaryColor = const Color(0xFF59559B);
+  late Color primaryColor = const Color(0xFF2D67a4);
   late Color secondaryColor = const Color(0xFFECC54D);
   late Color positiveButton = const Color(0xFF2E8868);
   late Color negativeButton = const Color(0xFFB04438);
