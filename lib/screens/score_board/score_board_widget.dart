@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:star_realms_score/constants.dart';
 import 'package:star_realms_score/widgets.dart';
@@ -16,8 +21,12 @@ class ScoreBoardWidget extends StatefulWidget {
 class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
   int _userCounter = 50;
   int _opponentCounter = 50;
+  double _turns = 0.0;
 
-  _incrementUserCounter(int incrementBy) {
+  final Uri _url =
+      Uri.parse("https://github.com/LFClaro/star-realms-score-flutter.git");
+
+  void _incrementUserCounter(int incrementBy) {
     // if _userCounter goes over 99, set it to a maximum of 99
     int result = _userCounter + incrementBy;
     if (result > 99) {
@@ -31,7 +40,7 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
     }
   }
 
-  _decrementUserCounter(int decrementBy) {
+  void _decrementUserCounter(int decrementBy) {
     // if _userCounter goes under 0, set it to a minimum of 0
     int result = _userCounter - decrementBy;
     if (result < 0) {
@@ -45,7 +54,7 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
     }
   }
 
-  _incrementOpponentCounter(int incrementBy) {
+  void _incrementOpponentCounter(int incrementBy) {
     // if _opponentCounter goes over 99, set it to a maximum of 99
     int result = _opponentCounter + incrementBy;
     if (result > 99) {
@@ -59,7 +68,7 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
     }
   }
 
-  _decrementOpponentCounter(int decrementBy) {
+  void _decrementOpponentCounter(int decrementBy) {
     // if _opponentCounter goes under 0, set it to a minimum of 0
     int result = _opponentCounter - decrementBy;
     if (result < 0) {
@@ -73,16 +82,36 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
     }
   }
 
-  _resetCounters() {
+  void _resetCounters() {
     setState(() {
       _userCounter = 50;
       _opponentCounter = 50;
     });
   }
 
+  void _rotateScreen() {
+    setState(() => _turns += 0.5);
+  }
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final headerTextStyle = TextStyle(
+      fontSize: 30.0,
+      color: StarScoreTheme.of(context).primaryTextColor,
+    );
+
     final bodyTextStyle = TextStyle(
+      fontSize: 16,
+      color: StarScoreTheme.of(context).primaryTextColor,
+    );
+
+    final scoreTextStyle = TextStyle(
       fontFamily: 'YuseiMagic',
       fontSize: 30.0,
       color: StarScoreTheme.of(context).secondaryTextColor,
@@ -106,7 +135,7 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
 
     Widget scoreText = Text(
       'Your score',
-      style: bodyTextStyle,
+      style: scoreTextStyle,
     );
 
     return Scaffold(
@@ -123,201 +152,260 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
           ),
           SafeArea(
             child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RotatedBox(
-                      quarterTurns: -2,
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 200.0,
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              color: opponentScoreBoxColor,
-                              borderRadius: BorderRadius.circular(8.0),
-                              boxShadow: Constants.kOpponentBoxShadow,
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                scoreText,
-                                Text(
-                                  '$_opponentCounter',
-                                  style: opponentScoreText,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Wrap(
-                                  alignment: WrapAlignment.center,
-                                  direction: Axis.horizontal,
-                                  spacing: 10.0,
-                                  runSpacing: 20.0,
-                                  children: [
-                                    PointsButton(
-                                      onPressed: () {
-                                        _decrementOpponentCounter(1);
-                                      },
-                                      points: -1,
-                                    ),
-                                    PointsButton(
-                                      onPressed: () {
-                                        _decrementOpponentCounter(5);
-                                      },
-                                      points: -5,
-                                    ),
-                                    PointsButton(
-                                      onPressed: () {
-                                        _decrementOpponentCounter(10);
-                                      },
-                                      points: -10,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Wrap(
-                                  alignment: WrapAlignment.center,
-                                  direction: Axis.horizontal,
-                                  spacing: 10.0,
-                                  runSpacing: 20.0,
-                                  children: [
-                                    PointsButton(
-                                      onPressed: () {
-                                        _incrementOpponentCounter(1);
-                                      },
-                                      points: 1,
-                                    ),
-                                    PointsButton(
-                                      onPressed: () {
-                                        _incrementOpponentCounter(5);
-                                      },
-                                      points: 5,
-                                    ),
-                                    PointsButton(
-                                      onPressed: () {
-                                        _incrementOpponentCounter(10);
-                                      },
-                                      points: 10,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      height: 36.0,
-                      thickness: 2.0,
-                      indent: 32.0,
-                      endIndent: 32.0,
-                      color: Colors.white30,
-                    ),
-                    IconButton.filled(
-                        onPressed: _resetCounters,
-                        icon: const Icon(
-                          Icons.refresh,
-                          size: 50.0,
-                        )),
-                    const Divider(
-                      height: 36.0,
-                      thickness: 2.0,
-                      indent: 32.0,
-                      endIndent: 32.0,
-                      color: Colors.white30,
-                    ),
-                    Column(
-                      children: [
+              child: SizedBox(
+                width: 800,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      if (kIsWeb)
                         Container(
-                          width: 200.0,
-                          alignment: Alignment.center,
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                            color: userScoreBoxColor,
-                            borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: Constants.kUserBoxShadow,
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colors.black54,
                           ),
-                          child: Column(
-                            children: <Widget>[
-                              scoreText,
-                              Text(
-                                '$_userCounter',
-                                style: userScoreText,
-                              ),
-                            ],
-                          ),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  "images/score_icon.png",
+                                  width: 150,
+                                ),
+                                Constants.kSizedBoxWidth24,
+                                SizedBox(
+                                  width: 500,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text("Star Realms Score - Flutter App",
+                                          style: headerTextStyle),
+                                      Constants.kDivider,
+                                      Text(
+                                        "A Flutter app to keep score on the Star Realms deckbuilding game.\n\nStar Realms is a two-player card game in which the score changes frequently. Each score board is facing one of the players during the game, for easier tracking.\n\nA quick app I built in a day, with the intention of training state management and Flutter project structuring.",
+                                        style: bodyTextStyle,
+                                      ),
+                                      Constants.kSizedBox10,
+                                      ElevatedButton.icon(
+                                        onPressed: _launchUrl,
+                                        icon: const FaIcon(FontAwesomeIcons.github),
+                                        label: const Text(
+                                            'Vist my Github repository!'),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ]),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Column(
-                            children: [
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                direction: Axis.horizontal,
-                                spacing: 10.0,
-                                runSpacing: 20.0,
+                      Constants.kSizedBox30,
+                      AnimatedRotation(
+                        turns: _turns,
+                        duration: const Duration(milliseconds: 1000),
+                        curve: Curves.easeInOut,
+                        onEnd: () {
+                          _turns = 0.0;
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RotatedBox(
+                              quarterTurns: -2,
+                              child: Column(
                                 children: [
-                                  PointsButton(
-                                    onPressed: () {
-                                      _decrementUserCounter(1);
-                                    },
-                                    points: -1,
+                                  Container(
+                                    width: 200.0,
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      color: opponentScoreBoxColor,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      boxShadow: Constants.kOpponentBoxShadow,
+                                    ),
+                                    child: Column(
+                                      children: <Widget>[
+                                        scoreText,
+                                        Text(
+                                          '$_opponentCounter',
+                                          style: opponentScoreText,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  PointsButton(
-                                    onPressed: () {
-                                      _decrementUserCounter(5);
-                                    },
-                                    points: -5,
-                                  ),
-                                  PointsButton(
-                                    onPressed: () {
-                                      _decrementUserCounter(10);
-                                    },
-                                    points: -10,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 20.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Wrap(
+                                          alignment: WrapAlignment.center,
+                                          direction: Axis.horizontal,
+                                          spacing: 10.0,
+                                          runSpacing: 20.0,
+                                          children: [
+                                            PointsButton(
+                                              onPressed: () {
+                                                _decrementOpponentCounter(1);
+                                              },
+                                              points: -1,
+                                            ),
+                                            PointsButton(
+                                              onPressed: () {
+                                                _decrementOpponentCounter(5);
+                                              },
+                                              points: -5,
+                                            ),
+                                            PointsButton(
+                                              onPressed: () {
+                                                _decrementOpponentCounter(10);
+                                              },
+                                              points: -10,
+                                            ),
+                                          ],
+                                        ),
+                                        Constants.kSizedBox10,
+                                        Wrap(
+                                          alignment: WrapAlignment.center,
+                                          direction: Axis.horizontal,
+                                          spacing: 10.0,
+                                          runSpacing: 20.0,
+                                          children: [
+                                            PointsButton(
+                                              onPressed: () {
+                                                _incrementOpponentCounter(1);
+                                              },
+                                              points: 1,
+                                            ),
+                                            PointsButton(
+                                              onPressed: () {
+                                                _incrementOpponentCounter(5);
+                                              },
+                                              points: 5,
+                                            ),
+                                            PointsButton(
+                                              onPressed: () {
+                                                _incrementOpponentCounter(10);
+                                              },
+                                              points: 10,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
-                              const SizedBox(height: 10),
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                direction: Axis.horizontal,
-                                spacing: 10.0,
-                                runSpacing: 20.0,
-                                children: [
-                                  PointsButton(
-                                    onPressed: () {
-                                      _incrementUserCounter(1);
-                                    },
-                                    points: 1,
+                            ),
+                            Constants.kDivider,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton.filled(
+                                    tooltip: "Reset Counters",
+                                    onPressed: _resetCounters,
+                                    icon: const Icon(
+                                      Icons.restore_rounded,
+                                      size: 50.0,
+                                    )),
+                                Constants.kSizedBoxWidth24,
+                                IconButton.filled(
+                                    tooltip: "Rotate Screen",
+                                    onPressed: _rotateScreen,
+                                    icon: const Icon(
+                                      Icons.screen_rotation_rounded,
+                                      size: 50.0,
+                                    )),
+                              ],
+                            ),
+                            Constants.kDivider,
+                            Column(
+                              children: [
+                                Container(
+                                  width: 200.0,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                    color: userScoreBoxColor,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    boxShadow: Constants.kUserBoxShadow,
                                   ),
-                                  PointsButton(
-                                    onPressed: () {
-                                      _incrementUserCounter(5);
-                                    },
-                                    points: 5,
+                                  child: Column(
+                                    children: <Widget>[
+                                      scoreText,
+                                      Text(
+                                        '$_userCounter',
+                                        style: userScoreText,
+                                      ),
+                                    ],
                                   ),
-                                  PointsButton(
-                                    onPressed: () {
-                                      _incrementUserCounter(10);
-                                    },
-                                    points: 10,
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: Column(
+                                    children: [
+                                      Wrap(
+                                        alignment: WrapAlignment.center,
+                                        direction: Axis.horizontal,
+                                        spacing: 10.0,
+                                        runSpacing: 20.0,
+                                        children: [
+                                          PointsButton(
+                                            onPressed: () {
+                                              _decrementUserCounter(1);
+                                            },
+                                            points: -1,
+                                          ),
+                                          PointsButton(
+                                            onPressed: () {
+                                              _decrementUserCounter(5);
+                                            },
+                                            points: -5,
+                                          ),
+                                          PointsButton(
+                                            onPressed: () {
+                                              _decrementUserCounter(10);
+                                            },
+                                            points: -10,
+                                          )
+                                        ],
+                                      ),
+                                      Constants.kSizedBox10,
+                                      Wrap(
+                                        alignment: WrapAlignment.center,
+                                        direction: Axis.horizontal,
+                                        spacing: 10.0,
+                                        runSpacing: 20.0,
+                                        children: [
+                                          PointsButton(
+                                            onPressed: () {
+                                              _incrementUserCounter(1);
+                                            },
+                                            points: 1,
+                                          ),
+                                          PointsButton(
+                                            onPressed: () {
+                                              _incrementUserCounter(5);
+                                            },
+                                            points: 5,
+                                          ),
+                                          PointsButton(
+                                            onPressed: () {
+                                              _incrementUserCounter(10);
+                                            },
+                                            points: 10,
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Constants.kSizedBox10,
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
