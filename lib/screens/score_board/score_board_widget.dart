@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:star_realms_score/constants.dart';
 import 'package:star_realms_score/widgets.dart';
@@ -22,9 +20,6 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
   int _userCounter = 50;
   int _opponentCounter = 50;
   double _turns = 0.0;
-
-  final Uri _url =
-      Uri.parse("https://github.com/LFClaro/star-realms-score-flutter.git");
 
   void _incrementUserCounter(int incrementBy) {
     // if _userCounter goes over 99, set it to a maximum of 99
@@ -93,24 +88,8 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
     setState(() => _turns += 0.5);
   }
 
-  Future<void> _launchUrl() async {
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final headerTextStyle = TextStyle(
-      fontSize: 30.0,
-      color: StarScoreTheme.of(context).primaryTextColor,
-    );
-
-    final bodyTextStyle = TextStyle(
-      fontSize: 16,
-      color: StarScoreTheme.of(context).primaryTextColor,
-    );
-
     final scoreTextStyle = TextStyle(
       fontFamily: 'YuseiMagic',
       fontSize: 30.0,
@@ -158,44 +137,7 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
                   child: Column(
                     children: [
                       if (kIsWeb)
-                        Container(
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.black54,
-                          ),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  "images/score_icon.png",
-                                  width: 150,
-                                ),
-                                Constants.kSizedBoxWidth24,
-                                SizedBox(
-                                  width: 500,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text("Star Realms Score - Flutter App",
-                                          style: headerTextStyle),
-                                      Constants.kDivider,
-                                      Text(
-                                        "A Flutter app to keep score on the Star Realms deckbuilding game.\n\nStar Realms is a two-player card game in which the score changes frequently. Each score board is facing one of the players during the game, for easier tracking.\n\nA quick app I built in a day, with the intention of training state management and Flutter project structuring.",
-                                        style: bodyTextStyle,
-                                      ),
-                                      Constants.kSizedBox10,
-                                      ElevatedButton.icon(
-                                        onPressed: _launchUrl,
-                                        icon: const FaIcon(FontAwesomeIcons.github),
-                                        label: const Text(
-                                            'Vist my Github repository!'),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ]),
-                        ),
+                      const WebBanner(),
                       Constants.kSizedBox30,
                       AnimatedRotation(
                         turns: _turns,
