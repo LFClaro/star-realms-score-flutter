@@ -17,11 +17,9 @@ abstract class Constants {
     )
   ];
 
-  static const kSizedBox10 = SizedBox(height: 10);
-
-  static const kSizedBox30 = SizedBox(height: 30);
-
-  static const kSizedBoxWidth24 = SizedBox(width: 24.0);
+  static const kSizedBox10 = SizedBox(width: 10.0, height: 10.0);
+  static const kSizedBox24 = SizedBox(width: 24.0, height: 24.0);
+  static const kSizedBox30 = SizedBox(width: 30.0, height: 30.0);
 
   static const kDivider = Divider(
     height: 36.0,

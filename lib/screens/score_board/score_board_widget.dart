@@ -7,6 +7,10 @@ import 'package:star_realms_score/constants.dart';
 import 'package:star_realms_score/widgets.dart';
 import 'package:star_realms_score/theme.dart';
 
+int _userCounter = 50;
+int _opponentCounter = 50;
+double _turns = 0.0;
+
 class ScoreBoardWidget extends StatefulWidget {
   const ScoreBoardWidget({super.key});
 
@@ -17,10 +21,6 @@ class ScoreBoardWidget extends StatefulWidget {
 }
 
 class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
-  int _userCounter = 50;
-  int _opponentCounter = 50;
-  double _turns = 0.0;
-
   void _incrementUserCounter(int incrementBy) {
     // if _userCounter goes over 99, set it to a maximum of 99
     int result = _userCounter + incrementBy;
@@ -131,15 +131,18 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
           ),
           SafeArea(
             child: Center(
-              child: SizedBox(
-                width: 800,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      if (kIsWeb)
-                      const WebBanner(),
-                      Constants.kSizedBox30,
-                      AnimatedRotation(
+              child: SingleChildScrollView(
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  runAlignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 30.0,
+                  runSpacing: 30.0,
+                  children: [
+                    if (kIsWeb) const WebBanner(),
+                    SizedBox(
+                      width: 600,
+                      child: AnimatedRotation(
                         turns: _turns,
                         duration: const Duration(milliseconds: 1000),
                         curve: Curves.easeInOut,
@@ -248,7 +251,7 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
                                       Icons.restore_rounded,
                                       size: 50.0,
                                     )),
-                                Constants.kSizedBoxWidth24,
+                                Constants.kSizedBox24,
                                 IconButton.filled(
                                     tooltip: "Rotate Screen",
                                     onPressed: _rotateScreen,
@@ -346,8 +349,8 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

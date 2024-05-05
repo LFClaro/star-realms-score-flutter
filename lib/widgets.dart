@@ -104,7 +104,7 @@ class _WebBannerState extends State<WebBanner> {
           "images/score_icon.png",
           width: 150,
         ),
-        Constants.kSizedBoxWidth24,
+        Constants.kSizedBox24,
         SizedBox(
           width: 500,
           child: Column(
