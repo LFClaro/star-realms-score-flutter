@@ -84,11 +84,3 @@ flutter:
 
   assets:
     - images/
-
-  fonts:
-    - family: Sixtyfour
-      fonts:
-        - asset: fonts/Sixtyfour-Regular.ttf
-    - family: YuseiMagic
-      fonts:
-        - asset: fonts/YuseiMagic-Regular.ttf
