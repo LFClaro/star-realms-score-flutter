@@ -1,26 +1,25 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:star_realms_score/constants.dart';
-import 'package:star_realms_score/widgets.dart';
+import 'package:star_realms_score/components/points_button.dart';
+import 'package:star_realms_score/components/web_banner.dart';
 import 'package:star_realms_score/theme.dart';
 
-int _userCounter = 50;
-int _opponentCounter = 50;
-double _turns = 0.0;
-
-class ScoreBoardWidget extends StatefulWidget {
-  const ScoreBoardWidget({super.key});
+class ScoreboardScreen extends StatefulWidget {
+  const ScoreboardScreen({super.key});
 
   static const String id = '/board';
 
   @override
-  State<ScoreBoardWidget> createState() => _ScoreBoardWidgetState();
+  State<ScoreboardScreen> createState() => _ScoreboardScreenState();
 }
 
-class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
+class _ScoreboardScreenState extends State<ScoreboardScreen> {
+  int _userCounter = 50;
+  int _opponentCounter = 50;
+  double _turns = 0.0;
+
   void _incrementUserCounter(int incrementBy) {
     // if _userCounter goes over 99, set it to a maximum of 99
     int result = _userCounter + incrementBy;
@@ -90,31 +89,9 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final scoreTextStyle = TextStyle(
-      fontFamily: 'YuseiMagic',
-      fontSize: 30.0,
-      color: StarScoreTheme.of(context).secondaryTextColor,
-    );
-
-    final userScoreText = TextStyle(
-      fontFamily: 'Sixtyfour',
-      fontSize: 50.0,
-      color: StarScoreTheme.of(context).primaryColor,
-    );
-
-    final userScoreBoxColor = StarScoreTheme.of(context).secondaryColor;
-
-    final opponentScoreText = TextStyle(
-      fontFamily: 'Sixtyfour',
-      fontSize: 50.0,
-      color: StarScoreTheme.of(context).secondaryColor,
-    );
-
-    final opponentScoreBoxColor = StarScoreTheme.of(context).primaryColor;
-
     Widget scoreText = Text(
       'Your score',
-      style: scoreTextStyle,
+      style: StarScoreTheme.of(context).headlineMedium.black,
     );
 
     return Scaffold(
@@ -146,9 +123,6 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
                         turns: _turns,
                         duration: const Duration(milliseconds: 1000),
                         curve: Curves.easeInOut,
-                        onEnd: () {
-                          _turns = 0.0;
-                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -161,7 +135,8 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
                                     alignment: Alignment.center,
                                     padding: const EdgeInsets.all(10.0),
                                     decoration: BoxDecoration(
-                                      color: opponentScoreBoxColor,
+                                      color: StarScoreTheme.of(context)
+                                          .primaryColor,
                                       borderRadius: BorderRadius.circular(8.0),
                                       boxShadow: Constants.kOpponentBoxShadow,
                                     ),
@@ -170,7 +145,15 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
                                         scoreText,
                                         Text(
                                           '$_opponentCounter',
-                                          style: opponentScoreText,
+                                          style: StarScoreTheme.of(context)
+                                              .displayMedium
+                                              .override(
+                                                  fontFamily:
+                                                      StarScoreTheme.of(context)
+                                                          .displayMediumFamily,
+                                                  color:
+                                                      StarScoreTheme.of(context)
+                                                          .secondaryColor),
                                         ),
                                       ],
                                     ),
@@ -269,7 +252,8 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
                                   alignment: Alignment.center,
                                   padding: const EdgeInsets.all(10.0),
                                   decoration: BoxDecoration(
-                                    color: userScoreBoxColor,
+                                    color: StarScoreTheme.of(context)
+                                        .secondaryColor,
                                     borderRadius: BorderRadius.circular(8.0),
                                     boxShadow: Constants.kUserBoxShadow,
                                   ),
@@ -278,7 +262,15 @@ class _ScoreBoardWidgetState extends State<ScoreBoardWidget> {
                                       scoreText,
                                       Text(
                                         '$_userCounter',
-                                        style: userScoreText,
+                                        style: StarScoreTheme.of(context)
+                                            .displayMedium
+                                            .override(
+                                                fontFamily:
+                                                    StarScoreTheme.of(context)
+                                                        .displayMediumFamily,
+                                                color:
+                                                    StarScoreTheme.of(context)
+                                                        .primaryColor),
                                       ),
                                     ],
                                   ),

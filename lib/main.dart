@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:star_realms_score/screens/score_board/score_board_widget.dart';
+import 'package:star_realms_score/screens/scoreboard_screen.dart';
 
 void main() => runApp(const ScoreApp());
 
@@ -16,9 +16,9 @@ class ScoreApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      initialRoute: ScoreBoardWidget.id,
+      initialRoute: ScoreboardScreen.id,
       routes: {
-        ScoreBoardWidget.id: (context) => const ScoreBoardWidget(),
+        ScoreboardScreen.id: (context) => const ScoreboardScreen(),
       },
     );
   }
