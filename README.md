@@ -11,7 +11,7 @@ Star Realms is a two-player card game in which the score changes frequently. Eac
 
 A quick app I built in a day, with the intention of training state management and Flutter project structuring.
 
-The web version can be found [here](https://lfclaro.github.io/star_score_flutter_web/).
+The web version can be found [here](https://www.luizclaro.com/star_score_flutter_web/).
 
 <p align="center">
 <img src="https://drive.google.com/uc?id=1E_d3ZjYaEjBTTBFmzZMQLjV8fx5PRn9L" alt="Star Realms Scoring App" width="400" />
